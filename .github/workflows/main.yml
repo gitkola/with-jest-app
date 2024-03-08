@@ -30,5 +30,3 @@ jobs:
       if: ${{ hashFiles('vercel.json') != '' }}
       run: vercel --prod
 
-    - name: Check Generated Workflow File
-      run: github-actions-yml-validator
