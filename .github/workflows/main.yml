@@ -1,0 +1,34 @@
+
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      if: ${{ hashFiles('package.json') != '' }}
+      run: npm install
+
+    - name: Run Tests
+      if: ${{ hashFiles('__tests__') != '' }}
+      run: npm run test:ci
+
+    - name: Build Project
+      run: npm run build
+
+    - name: Deploy to Vercel
+      if: ${{ hashFiles('vercel.json') != '' }}
+      run: vercel --prod
+
+    - name: Check Generated Workflow File
+      run: github-actions-yml-validator
